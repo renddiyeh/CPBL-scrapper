@@ -14,9 +14,7 @@ def sortGameFile(fielName):
     name = Path(fielName).stem
     return int(name)
 
-years = os.listdir('data')
 teamPreifixes = ['Home', 'Visiting']
-
 mainKeys = [
     'Year',
     'GameSno',
@@ -29,6 +27,7 @@ calcKeys = [
     'HittingCnt',
     'ErrorCnt',
 ]
+
 header = mainKeys.copy()
 for teamPrefix in teamPreifixes:
     for key in calcKeys:
@@ -36,6 +35,8 @@ for teamPrefix in teamPreifixes:
 header.append('InningCnt')
 
 rows = []
+
+years = os.listdir('data')
 for year in years:
     dirname = 'data/' + year
     gameFiles = os.listdir(dirname)
@@ -49,14 +50,15 @@ for year in years:
         for key in mainKeys:
             row.append(data['CurtGameDetailJson'][key])
         for teamPrefix in teamPreifixes:
+            teamName = data['CurtGameDetailJson'][teamPrefix + 'TeamName']
             for key in calcKeys:
-                teamName = data['CurtGameDetailJson'][teamPrefix + 'TeamName']
-                row.append(getTeamStat(data['ScoreboardJson'], teamName, key))
+                calcStat = getTeamStat(data['ScoreboardJson'], teamName, key)
+                row.append(calcStat)
 
         row.append(data['ScoreboardJson'][0]['InningSeq'])
         rows.append(row)
 
-print(len(rows))
+# print(len(rows))
 with open('GameStats.csv', 'w', newline='', encoding='utf-8') as f:
     # using csv.writer method from CSV package
     write = csv.writer(f)

@@ -38,6 +38,13 @@ years = {
     "1990": 180,
 }
 
+def parse_json(d):
+    for k in d:
+        if isinstance(d[k], str):
+            d[k] = json.loads(d[k])
+    return d
+
+
 def getGameData(year, gameNo):
     session = requests.Session()
     response = session.get('https://www.cpbl.com.tw/box/index', verify = False)
@@ -51,12 +58,6 @@ def getGameData(year, gameNo):
         "Year": year,
     }
 
-    def parse_json(d):
-        for k in d:
-            if isinstance(d[k], str):
-                d[k] = json.loads(d[k])
-        return d
-
     try:
         response = session.post('https://www.cpbl.com.tw/box/getlive', params = params, verify = False)
 
@@ -65,7 +66,7 @@ def getGameData(year, gameNo):
         if not os.path.exists(dir):
             os.makedirs(dir)
 
-        with open(dir + '/' + str(gameNo) + '.json', 'w', encoding='utf8') as f:
+        with open(dir + '/' + str(gameNo) + '.json', 'w', encoding='utf-8') as f:
             json.dump(parse_json(jsonData), f, ensure_ascii=False)
     except:
         print('error for ' + str(year) + ' game ' + str(gameNo))
