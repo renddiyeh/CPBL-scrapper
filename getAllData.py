@@ -70,20 +70,10 @@ def getGameData(year, gameNo):
     except:
         print('error for ' + str(year) + ' game ' + str(gameNo))
 
-
 def getYearData(year):
     games = years[str(year)]
     for game in range(games):
         getGameData(year, game + 1)
 
-toDo = [[1999, 189], [2008,257]]
-
-for task in toDo:
-    year = task[0]
-    start = task[1]
-    games = years[str(year)]
-    for game in range(start, games):
-        getGameData(year, game + 1)
-
-# for year in range(2009, 2022):
-#     getYearData(year)
+for year in range(2009, 2022):
+    getYearData(year)
