@@ -47,8 +47,9 @@ def getWeatherData(city, url, month):
             temp = row.select_one('td:nth-child(8)').get_text().strip()
             max_temp = row.select_one('td:nth-child(9)').get_text().strip()
             min_temp = row.select_one('td:nth-child(11)').get_text().strip()
+            humid = row.select_one('td:nth-child(14)').get_text().strip()
             precp = row.select_one('td:nth-child(22)').get_text().strip()
-            all_data.append([city, month, day, temp, max_temp, min_temp, precp])
+            all_data.append([city, month, day, temp, max_temp, min_temp, humid, precp])
 
 def getMonthlyData(d):
     for station in stations:
@@ -68,5 +69,5 @@ for d in range(12 * 3):
 
 with open('weather_data.csv', 'w', encoding='utf-8', newline='') as f:
     write = csv.writer(f)
-    write.writerow(['city', 'month', 'day', 'temp', 'max_temp', 'min_temp', 'precp'])
+    write.writerow(['city', 'month', 'day', 'temp', 'max_temp', 'min_temp', 'humid', 'precp'])
     write.writerows(all_data)
